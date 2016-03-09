@@ -3,7 +3,7 @@
 #CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
 import fileinput, optparse, string
-class Town #object for town
+class Town #building definition
     def __init__():
         self.agacent =0
     def __init__(self,name):
@@ -14,12 +14,12 @@ class Town #object for town
 def striplist(l):
     return([x.strip() for x in l])
 
-def add2dict(cityFile):
+def add2dict(cityFile):  #building town object dictionary
     str info
     with open(cityFile,'r') as cityList:
         for line in cityList:
             if not line.contains("From") || not line.contains('_'):
-                if not line: #building town object
+                if not line:
                     info = line.split(' ')[0]
                     info = striplist(info)
                     while '' in info
@@ -28,7 +28,7 @@ def add2dict(cityFile):
                     city.roudmap = {info[1],info[2]}
                     city.agacent++
 
-def userInput():
+def userInput(): #getting user input
     int myInput = 1
     while (userSelection != 0)
         myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite")
@@ -44,7 +44,7 @@ def userInput():
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
 
-def main(argv):
+def main(argv): #main argv for input
     cityFile = ""
     try:
         opts, args = getopt.getopt(sys.argv[1:],"f:",["file="])
