@@ -26,7 +26,7 @@ def add2dict(cityFile):  #building town object dictionary
                         while '' in info:
                             info.remove('')
                         city = Town(info[0]).lower()
-                        roudmap[city] = {info[1],info[2]}
+                        roudmap[city.lower()] = {info[1],info[2]}
                         city.agacent +=1
 
 def userInput(): #getting user input
