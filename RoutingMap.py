@@ -3,12 +3,12 @@
 #CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
 import fileinput, optparse
-class town #object for town
-    def adjacency
+class Town #object for town
+    def __init__():
         self.agacent =0
     def __init__(self,name):
         self.name = name
-    def map
+    def __init__(self):
         self.roudmap = defaultdict(list)
 
 def add2dict(cityFile):
@@ -21,9 +21,9 @@ def add2dict(cityFile):
                     info = info.strip()
                     while '' in info
                         info.remove('')
-                    town.name = info[0]
-                    town.roudmap[town.name] = {info[1],info[2]}
-                    town.agacent++
+                    city = Town(info[0])
+                    city.roudmap = {info[1],info[2]}
+                    city.agacent++
 
 def userInput():
     int myInput = 1
