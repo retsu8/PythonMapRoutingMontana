@@ -8,8 +8,7 @@ class Town: #building definition
         self.agacent =0
     def __init__(self,name):
         self.name = name
-    def __init__(self):
-        self.roudmap = defaultdict(list)
+    roudmap = defaultdict(list)
 
 def striplist(l):
     return([x.strip() for x in l])
@@ -25,7 +24,7 @@ def add2dict(cityFile):  #building town object dictionary
                         while '' in info:
                             info.remove('')
                         city = Town(info[0])
-                        city.roudmap = {info[1],info[2]}
+                        roudmap[city] = {info[1],info[2]}
                         city.agacent +=1
 
 def userInput(): #getting user input
