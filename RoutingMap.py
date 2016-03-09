@@ -17,8 +17,8 @@ def striplist(l):
 def add2dict(cityFile):  #building town object dictionary
     with open(cityFile,'r') as cityList:
         for line in cityList:
-            if not line.contains("From"):
-                if not line.contains('_'):
+            if not any(substring in line for substring in "From"):
+                if not any(substring in line for substring in '_'):
                     if not line:
                         info = line.split(' ')[0]
                         info = striplist(info)
@@ -30,8 +30,8 @@ def add2dict(cityFile):  #building town object dictionary
 
 def userInput(): #getting user input
     myInput = 1
-    while (userSelection != 0):
-        myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite")
+    while (myInput != 0):
+        myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
         myInput = myInput.strip()
         if myInput == 1:
             city = input("Please enter the city to query").strip()
