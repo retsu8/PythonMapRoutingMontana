@@ -3,12 +3,14 @@
 #Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
 import fileinput, optparse, string, os, sys, getopt
+
+roudmap = defaultdict(list)
 class Town: #building definition
-    def __init__():
-        self.agacent =0
+    agacent = 0
+    def __init__(self, agacent):
+        self.agacent = agacent
     def __init__(self,name):
         self.name = name
-    roudmap = defaultdict(list)
 
 def striplist(l):
     return([x.strip() for x in l])
@@ -23,7 +25,7 @@ def add2dict(cityFile):  #building town object dictionary
                         info = striplist(info)
                         while '' in info:
                             info.remove('')
-                        city = Town(info[0])
+                        city = Town(info[0]).lower()
                         roudmap[city] = {info[1],info[2]}
                         city.agacent +=1
 
@@ -31,11 +33,13 @@ def userInput(): #getting user input
     myInput = 1
     while (myInput != 0):
         myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
-        myInput = myInput.strip()
+        myInput = int(myInput)
         if myInput == 1:
-            city = input("Please enter the city to query").strip()
-            if city in town:
-                print city.agacent
+            city = input("Please enter the city to query\n").strip().lower()
+            if city in roudmap.keys():
+                print (city, " is agacent to ", city.agacent, " Cities")
+            else:
+                print ("No city found try agian")
         elif myInput == 2:
             print("Working on it")
         elif myInput == 3:
@@ -51,15 +55,15 @@ def main(argv): #main argv for input
     try:
         opts, args = getopt.getopt(sys.argv[1:],"f:",["file="])
     except getopt.GetoptError:
-        print 'RoutingMap.py -f <file>'
+        print ("RoutingMap.py -f <file>")
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print 'RoutingMap.py -f <file>'
+            print ("RoutingMap.py -f <file>")
             sys.exit(2)
         elif opt in ('-f', '--file'):
             cityFile = arg
-    print "cityFile is ", cityFile
+    print ("City list is ", cityFile)
     add2dict(cityFile)
     userInput()
 
