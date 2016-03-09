@@ -2,7 +2,7 @@
 #Author Will
 #CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
-import fileinput, optparse
+import fileinput, optparse, string
 class Town #object for town
     def __init__():
         self.agacent =0
@@ -11,6 +11,9 @@ class Town #object for town
     def __init__(self):
         self.roudmap = defaultdict(list)
 
+def striplist(l):
+    return([x.strip() for x in l])
+
 def add2dict(cityFile):
     str info
     with open(cityFile,'r') as cityList:
@@ -18,7 +21,7 @@ def add2dict(cityFile):
             if not line.contains("From") || not line.contains('_'):
                 if not line: #building town object
                     info = line.split(' ')[0]
-                    info = info.strip()
+                    info = striplist(info)
                     while '' in info
                         info.remove('')
                     city = Town(info[0])
@@ -28,14 +31,18 @@ def add2dict(cityFile):
 def userInput():
     int myInput = 1
     while (userSelection != 0)
-    myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite")
-    if myInput == 1:
-        city = input("Please enter the city to query")
-        if city is in town:
-            print city.agacent
-
-
-    get.chomp
+        myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite")
+        myInput = myInput.strip()
+        if myInput == 1:
+            city = input("Please enter the city to query").strip()
+            if city is in town:
+                print city.agacent
+        else if myInput == 2:
+        else if myInput == 3:
+        else if myInput == 4:
+        else
+            print("Input unreconized please try again")
+    print("Goodbye thank you for using the database.")
 
 def main(argv):
     cityFile = ""
