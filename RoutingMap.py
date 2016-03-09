@@ -1,9 +1,9 @@
-#/bin/python
-#Author Will
-#CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
+#!/usr/bin/python2.7
+#This Python file uses the following encoding: utf-8
+#Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
-import fileinput, optparse, string
-class Town #building definition
+import fileinput, optparse, string, os, sys
+class Town: #building definition
     def __init__():
         self.agacent =0
     def __init__(self,name):
@@ -15,10 +15,11 @@ def striplist(l):
     return([x.strip() for x in l])
 
 def add2dict(cityFile):  #building town object dictionary
-    str info
     with open(cityFile,'r') as cityList:
         for line in cityList:
-            if not line.contains("From") || not line.contains('_'):
+            if not line.contains("From")
+                next
+            if not line.contains('_'):
                 if not line:
                     info = line.split(' ')[0]
                     info = striplist(info)
