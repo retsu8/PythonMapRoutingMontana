@@ -2,7 +2,7 @@
 #This Python file uses the following encoding: utf-8
 #Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
-import fileinput, optparse, string, os, sys
+import fileinput, optparse, string, os, sys, getopt
 class Town: #building definition
     def __init__():
         self.agacent =0
@@ -17,31 +17,33 @@ def striplist(l):
 def add2dict(cityFile):  #building town object dictionary
     with open(cityFile,'r') as cityList:
         for line in cityList:
-            if not line.contains("From")
-                next
-            if not line.contains('_'):
-                if not line:
-                    info = line.split(' ')[0]
-                    info = striplist(info)
-                    while '' in info
-                        info.remove('')
-                    city = Town(info[0])
-                    city.roudmap = {info[1],info[2]}
-                    city.agacent++
+            if not line.contains("From"):
+                if not line.contains('_'):
+                    if not line:
+                        info = line.split(' ')[0]
+                        info = striplist(info)
+                        while '' in info:
+                            info.remove('')
+                        city = Town(info[0])
+                        city.roudmap = {info[1],info[2]}
+                        city.agacent +=1
 
 def userInput(): #getting user input
-    int myInput = 1
-    while (userSelection != 0)
+    myInput = 1
+    while (userSelection != 0):
         myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite")
         myInput = myInput.strip()
         if myInput == 1:
             city = input("Please enter the city to query").strip()
-            if city is in town:
+            if city in town:
                 print city.agacent
-        else if myInput == 2:
-        else if myInput == 3:
-        else if myInput == 4:
-        else
+        elif myInput == 2:
+            print("Working on it")
+        elif myInput == 3:
+            print("Working on it")
+        elif myInput == 4:
+            print("Working on it")
+        else:
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
 
