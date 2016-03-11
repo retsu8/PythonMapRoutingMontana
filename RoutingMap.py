@@ -2,11 +2,11 @@
 #This Python file uses the following encoding: utf-8
 #Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
+import netwworkx as nx
 import fileinput, optparse, string, os, sys, getopt
 
 roudmap = defaultdict(list)
 class Town: #building definition
-    agacent = 0
     def __init__(self, agacent):
         self.agacent = agacent
     def __init__(self,name):
@@ -28,6 +28,9 @@ def add2dict(cityFile):  #building town object dictionary
                         city = Town(info[0]).lower()
                         roudmap[city.lower()] = {info[1],info[2]}
                         city.agacent +=1
+                        #G=nx.Graph()
+                        #G.add_node()
+                        #G.add_edge()
 
 def userInput(): #getting user input
     myInput = 1
