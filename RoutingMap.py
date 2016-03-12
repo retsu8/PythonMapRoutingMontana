@@ -45,10 +45,10 @@ def add2graph(city1, city2, miles):
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
-        myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
+        myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
         #myInput = int(myInput)
         if myInput == 1:
-            city = input("Please enter the city to query\n").strip().lower()
+            city = raw_input("Please enter the city to query\n").strip().lower()
             if city in roudmap.keys():
                 print (city, " is agacent to ", city.agacent, " Cities")
             else:
