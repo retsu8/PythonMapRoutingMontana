@@ -26,22 +26,27 @@ def parseFile(cityFile):  #building town object dictionary
                         while '' in info:
                             info.remove('')
                         city = Town(info[0]).lower()
+                        print "Found", city
                         city.agacent +=1
-                        city2 = info[1]
+                        city2 = Town(info[1]).lower()
+                        print "Found", city2
                         milesBetwen = info[2]
                         add2graph(city, city2, milesBetween)
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
+        print "adding", city1
         roudmap.add_node(city1)
     if city2 not in roudmap:
+        print "adding", city2
         roudmap.add_node(city2)
     if city in roudmap:
+        print "Adding distance", miles
         roudmap.add_edge(city1, city2, weigth=miles)
 def userInput(): #getting user input
-    myInput = 1
+    myInput = int(1)
     while (myInput != 0):
         myInput = input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
-        myInput = int(myInput)
+        #myInput = int(myInput)
         if myInput == 1:
             city = input("Please enter the city to query\n").strip().lower()
             if city in roudmap.keys():
