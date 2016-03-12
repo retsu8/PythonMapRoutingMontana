@@ -2,10 +2,10 @@
 #This Python file uses the following encoding: utf-8
 #Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
-import netwworkx as nx
+import networkx as nx
 import fileinput, optparse, string, os, sys, getopt
 
-roudmap = defaultdict(list)
+roudmap=nx.Graph()
 class Town: #building definition
     def __init__(self, agacent):
         self.agacent = agacent
@@ -15,23 +15,28 @@ class Town: #building definition
 def striplist(l):
     return([x.strip() for x in l])
 
-def add2dict(cityFile):  #building town object dictionary
+def parseFile(cityFile):  #building town object dictionary
     with open(cityFile,'r') as cityList:
         for line in cityList:
             if not any(substring in line for substring in "From"):
                 if not any(substring in line for substring in '_'):
                     if not line:
-                        info = line.split(' ')[0]
+                        info = line.split('   ')[0]
                         info = striplist(info)
                         while '' in info:
                             info.remove('')
                         city = Town(info[0]).lower()
-                        roudmap[city.lower()] = {info[1],info[2]}
                         city.agacent +=1
-                        #G=nx.Graph()
-                        #G.add_node()
-                        #G.add_edge()
-
+                        city2 = info[1]
+                        milesBetwen = info[2]
+                        add2graph(city, city2, milesBetween)
+def add2graph(city1, city2, miles):
+    if city1 not in roudmap:
+        roudmap.add_node(city1)
+    if city2 not in roudmap:
+        roudmap.add_node(city2)
+    if city in roudmap:
+        roudmap.add_edge(city1, city2, weigth=miles)
 def userInput(): #getting user input
     myInput = 1
     while (myInput != 0):
@@ -67,7 +72,7 @@ def main(argv): #main argv for input
         elif opt in ('-f', '--file'):
             cityFile = arg
     print ("City list is ", cityFile)
-    add2dict(cityFile)
+    parseFile(cityFile)
     userInput()
 
 if __name__ == "__main__":
