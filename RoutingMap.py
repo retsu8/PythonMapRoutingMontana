@@ -12,10 +12,9 @@ except ImportError, e:
 roudmap=nx.Graph()
 cities=list()
 class Town: #building definition
-    def __init__(self, agacent):
-        self.agacent = agacent
     def __init__(self,name):
         self.name = name
+        self.agacent = 0
 
 def striplist(l):
     return([x.strip() for x in l])
@@ -29,6 +28,8 @@ def parseFile(cityFile):  #building town object dictionary
             if line.isspace():
                 continue
             line = line.replace('-----------------------','')
+            if line:
+                continue
             info = line.split('  ')
             info = striplist(info)
             while '' in info:
@@ -47,7 +48,7 @@ def add2graph(city1, city2, miles):
     if city2 not in roudmap:
         print "adding", city2
         roudmap.add_node(city2)
-    if city in roudmap:
+    if city1 in roudmap:
         print "Adding distance", miles
         roudmap.add_edge(city1, city2, weigth=miles)
 def findDirConnected():
