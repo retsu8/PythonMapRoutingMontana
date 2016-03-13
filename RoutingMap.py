@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 #This Python file uses the following encoding: utf-8
 __author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
-from collections import defaultdictS
+from collections import defaultdict
 from collections import deque
 import fileinput, optparse, string, os, sys, getopt
 try:
@@ -27,7 +27,7 @@ def breadth_first_search(g, source):
          parent, n = queue.popleft()
          yield parent, n
          new = set(g[n]) - enqueued
-         en queued |= new
+         enqueued |= new
          queue.extend([(n, child) for child in new])
 
 def striplist(l):
@@ -35,13 +35,20 @@ def striplist(l):
 
 def parseFile(cityFile):  #building town object dictionary
     print 'adding cities'
-    with open(cityFile,'r') as cityList:
+    with open(cityFile) as cityList:
+        intro = False
+        while (not intro):
+            line = cityList.readline()
+            line = line.lower()
+            if "from" in line:
+                intro = True
         for line in cityList:
             line = line.lower()
             line = line.replace('-----------------------','')
             info = line.split('  ')
             info = striplist(info)
             info = filter(bool, info)
+            print info
             if len(info) < 3:
                 continue
             if city not in cities:
@@ -94,7 +101,7 @@ def userInput(): #getting user input
     print("Goodbye thank you for using the database.")
 
 def main(argv): #main argv for input
-    cityFile = ""
+    cityFile = "city1.txt"
     print "Grabbing files for city Map"
     try:
         opts, args = getopt.getopt(sys.argv[1:],"f:",["file="])
