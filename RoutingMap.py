@@ -26,6 +26,7 @@ def parseFile(cityFile):  #building town object dictionary
             if not any(substring in line for substring in "From"):
                 if not any(substring in line for substring in '_'):
                     if not line:
+                        line = line.replace('-','')
                         info = line.split('   ')[0]
                         info = striplist(info)
                         while '' in info:
@@ -72,6 +73,7 @@ def userInput(): #getting user input
 
 def main(argv): #main argv for input
     cityFile = ""
+    print "Grabbing files for city Map"
     try:
         opts, args = getopt.getopt(sys.argv[1:],"f:",["file="])
     except getopt.GetoptError:
