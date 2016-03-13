@@ -96,12 +96,27 @@ def add2graph(city1, city2, miles):
     if city1 in roudmap:
         #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weight=miles)
-def findDirConnected():
+def quarryAgacent():
     city = raw_input("Please enter the city to query\n").strip().lower()
     if city in cities:
         print city, " is agacent to ", len(roudmap.edges(city)), " Cities"
         return
     print "No city found please try agian"
+def checkKhop():
+    places = ""
+    while places != quit:
+        places = raw_input("Please enter the cities to query\n or quit to exit: ").strip().lower()
+        places = places.split()
+        places = striplist(places)
+        places[0]=mystrip(places[0])
+        places[1]=mystrip(places[1])
+        if len(places) != 2:
+            print "Wrong amount of places please try agian"
+            return
+        else:
+            pass
+    return
+
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
@@ -112,11 +127,11 @@ def userInput(): #getting user input
             continue
         myInput = int(myInput)
         if myInput == 1:
-            findDirConnected()
+            quarryAgacent()
         elif myInput == 2:
             directConnection()
         elif myInput == 3:
-            print("Not yet Implemented")
+            checkKhop()
         elif myInput == 4:
             print("Not yet Implemented")
         elif myInput == 5:
