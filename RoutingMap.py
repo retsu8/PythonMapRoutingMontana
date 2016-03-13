@@ -54,6 +54,13 @@ def parseFile(cityFile):  #building town object dictionary
 def map():
     for n1, n2, attr in roudmap.edges(data=True): # unpacking
         print n1, n2, attr['weight']
+def directConnection():
+    places = raw_input("Please enter the cities to query\n").strip().lower()
+    places = split()
+    places = striplist(places)
+    player = re.compile('[^a-zA-Z]')
+    if any(e in places for e in cities)
+
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
         #print "adding", city1
@@ -82,7 +89,7 @@ def userInput(): #getting user input
         if myInput == 1:
             findDirConnected()
         elif myInput == 2:
-            print("Not yet Implemented")
+            directConnection()
         elif myInput == 3:
             print("Not yet Implemented")
         elif myInput == 4:
