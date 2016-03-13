@@ -3,7 +3,7 @@
 __author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
 from collections import defaultdict
 from collections import deque
-import fileinput, optparse, string, os, sys, getopt
+import fileinput, string, optparse, os, sys, getopt, re
 try:
     import networkx as nx
 except ImportError, e:
@@ -47,7 +47,6 @@ def parseFile(cityFile):  #building town object dictionary
             info = line.split('  ')
             info = striplist(info)
             info = filter(bool, info)
-            print info
             if len(info) < 3:
                 continue
             if info[0] not in cities:
@@ -62,11 +61,21 @@ def map():
     for n1, n2, attr in roudmap.edges(data=True): # unpacking
         print n1, n2, attr['weight']
 def directConnection():
-    places = raw_input("Please enter the cities to query\n").strip().lower()
-    places = split()
-    places = striplist(places)
-    player = re.compile('[^a-zA-Z]')
-    if any(e in places for e in cities)
+    places = ""
+    while places != quit:
+        places = raw_input("Please enter the cities to query\n or quit to exit: ").strip().lower()
+        places = places.split()
+        places = striplist(places)
+        if len(places) != 2:
+            print "Wrong amount of places please try agian"
+            return
+        else:
+            try:
+                roudmap.edge[places[0]][places[1]]
+                print "Yes", roudmap.edge[places[0]][places[1]]
+            except:
+                print "No"
+    return
 
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
