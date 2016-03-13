@@ -20,6 +20,11 @@ bad_chars = """[!@#$ -,)(*&^%<>?/\r\n"|{}=+.]:; """
 class Town: #building definition
     def __init__(self,name):
         self.name = name
+def mystrip(strg):
+    """
+    Strips bad characters from a string.
+    """
+    return strg.translate(string.maketrans("", "", ), bad_chars)
 
 def breadth_first_search(g, source):
      queue = deque([(None, source)])
@@ -68,8 +73,8 @@ def directConnection():
         places = raw_input("Please enter the cities to query\n or quit to exit: ").strip().lower()
         places = places.split()
         places = striplist(places)
-        for place in places:
-            place=place.translate(string.maketrans("", "", ), bad_chars)
+        places[0]=mystrip(places[0])
+        places[1]=mystrip(places[1])
         if len(places) != 2:
             print "Wrong amount of places please try agian"
             return
