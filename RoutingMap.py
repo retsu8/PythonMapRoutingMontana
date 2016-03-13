@@ -2,9 +2,11 @@
 #This Python file uses the following encoding: utf-8
 #Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
 from collections import defaultdict
-import networkx as nx
 import fileinput, optparse, string, os, sys, getopt
-
+try:
+    import networkx as nx
+except ImportError, e:
+    pass # module doesn't exist, deal with it.
 roudmap=nx.Graph()
 class Town: #building definition
     def __init__(self, agacent):
@@ -49,7 +51,7 @@ def userInput(): #getting user input
         #myInput = int(myInput)
         if myInput == 1:
             city = raw_input("Please enter the city to query\n").strip().lower()
-            if city in roudmap.keys():
+            if city in roudmap:
                 print (city, " is agacent to ", city.agacent, " Cities")
             else:
                 print ("No city found try agian")
