@@ -110,11 +110,16 @@ def checkKhop():
         places = striplist(places)
         places[0]=mystrip(places[0])
         places[1]=mystrip(places[1])
-        if len(places) != 2:
-            print "Wrong amount of places please try agian"
+        d = places[2]
+        if len(places) != 3:
+            print "Wrong amount of entries please try agian"
             return
         else:
-            pass
+            try:
+                roudmap.edge[places[0]][places[1]]
+                print "Yes, 1", roudmap.edge[places[0]][places[1]]
+            except:
+                print "No"
     return
 
 def userInput(): #getting user input
