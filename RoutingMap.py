@@ -24,19 +24,22 @@ def parseFile(cityFile):  #building town object dictionary
     print 'adding cities'
     with open(cityFile,'r') as cityList:
         for line in cityList:
+            line = line.lower()
             print 'found', line
+            if line.isspace():
+                continue
             line = line.replace('-----------------------','')
-            info = line.split('   ')[0]
+            info = line.split('  ')
             info = striplist(info)
             while '' in info:
                 info.remove('')
             print "adding", info[0]
-            city = Town(info[0]).lower()
-            print "setting agacency", cit.agacent
+            city = Town(info[0])
+            print "setting agacency", city.agacent
             city.agacent +=1
             if city not in cities:
                 cities.append(city)
-            add2graph(info[0].lower(), info[1].lower(), info[-1])
+            add2graph(info[0], info[1], info[-1])
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
         print "adding", city1
