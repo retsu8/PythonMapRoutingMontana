@@ -57,6 +57,10 @@ def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
         myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
+        if myInput == '':
+            print("Did not enter anything please try agian")
+            myInput = int(1)
+            continue
         myInput = int(myInput)
         if myInput == 1:
             findDirConnected()
@@ -66,8 +70,6 @@ def userInput(): #getting user input
             print("Not yet Implemented")
         elif myInput == 4:
             print("Not yet Implemented")
-        elif myInput == None:
-            print("Did not enter anything please try agian")
         elif myInput not in range(0-4):
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
