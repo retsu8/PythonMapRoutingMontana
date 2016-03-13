@@ -48,6 +48,7 @@ def add2graph(city1, city2, miles):
         roudmap.add_edge(city1, city2, weigth=miles)
 def findDirConnected():
     city = raw_input("Please enter the city to query\n").strip().lower()
+    city = Town(city)
     if city in cities:
         print (city, " is agacent to ", city.agacent, " Cities")
     else:
@@ -65,6 +66,8 @@ def userInput(): #getting user input
             print("Not yet Implemented")
         elif myInput == 4:
             print("Not yet Implemented")
+        elif myInput == None:
+            print("Did not enter anything please try agian")
         elif myInput not in range(0-4):
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
