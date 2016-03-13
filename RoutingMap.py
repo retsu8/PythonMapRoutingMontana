@@ -6,9 +6,12 @@ import fileinput, optparse, string, os, sys, getopt
 try:
     import networkx as nx
 except ImportError, e:
-    import pip
-    pip.main(['install', 'networkx'])
-    import networkx as nx
+    try:
+        import pip
+        pip.main(['install', 'networkx'])
+        import networkx as nx
+    except ImportError, e:
+        print "Cant install networkx please resolve this first"
 roudmap=nx.Graph()
 cities=list()
 class Town: #building definition
