@@ -1,7 +1,7 @@
 #!/usr/bin/python2.7
 #This Python file uses the following encoding: utf-8
 __author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
-from collections import defaultdictS
+from collections import defaultdict
 from collections import deque
 import fileinput, optparse, string, os, sys, getopt
 try:
@@ -13,28 +13,27 @@ except ImportError, e:
         import networkx as nx
     except ImportError, e:
         print "Cant install networkx please resolve this first"
-roudmap=nx.Graph()
-cities=list()
+roudmap=nx.MultiGraph()
+cities=[]
 class Town: #building definition
     def __init__(self,name):
         self.name = name
-    agacent = 0
 
-def breadth_first_search(g, source):
-     queue = deque([(None, source)])
-     enqueued = set([source])
-     while queue:
-         parent, n = queue.popleft()
-         yield parent, n
-         new = set(g[n]) - enqueued
-         en queued |= new
-         queue.extend([(n, child) for child in new])
+#def breadth_first_search(g, source):
+#     queue = deque([(None, source)])
+#     enqueued = set([source])
+#     while queue:
+#         parent, n = queue.popleft()
+#         yield parent, n
+#         new = set(g[n]) - enqueued
+#         en queued |= new
+#         queue.extend([(n, child) for child in new])
 
 def striplist(l):
     return([x.strip() for x in l])
 
 def parseFile(cityFile):  #building town object dictionary
-    print 'adding cities'
+    print 'adding city'
     with open(cityFile,'r') as cityList:
         for line in cityList:
             line = line.lower()
@@ -44,12 +43,14 @@ def parseFile(cityFile):  #building town object dictionary
             info = filter(bool, info)
             if len(info) < 3:
                 continue
-            if city not in cities:
-                city = Town(info[0])
-                cities.append(city)
-            city.agacent = city.agacent + 1
-            add2graph(info[0], info[1], info[2])
-    print "Done importing cities"
+            if info[0] not in cities:
+                city1 = Town(info[0])
+                cities.append(info[0])
+            if info[1] not in cities:
+                city2 = Town(info[1])
+                cities.append(info[1])
+            add2graph(city1, city2, info[2])
+    print "Done importing cities", cities
 def map():
     for n1, n2, attr in roudmap.edges(data=True): # unpacking
         print n1, n2, attr['weight']
@@ -65,10 +66,9 @@ def add2graph(city1, city2, miles):
         roudmap.add_edge(city1, city2, weight=miles)
 def findDirConnected():
     city = raw_input("Please enter the city to query\n").strip().lower()
-    for place in cities: # unpacking
-        if city == place:
-            print (city, " is agacent to ", city.agacent, " Cities")
-            return
+    if city in cities:
+        print city, " is agacent to ", roudmap.edges(city), " Cities"
+        return
     print "No city found please try agian"
 def userInput(): #getting user input
     myInput = int(1)
