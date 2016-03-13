@@ -30,14 +30,13 @@ def parseFile(cityFile):  #building town object dictionary
             info = filter(bool, info)
             if len(info) < 3:
                 continue
-            print info
             city = Town(info[0])
             city.agacent = city.agacent + 1
             add2graph(info[0], info[1], info[2])
     print "Done importing cities"
 def map():
-    for n, e in zip(roudmap.nodes(), roudmap.edges(weight)):
-        print "City", n, "is", e, "away."
+    for n1, n2, attr in roudmap.edges(data=True): # unpacking
+        print n1, n2, attr['weight']
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
         #print "adding", city1
@@ -47,7 +46,7 @@ def add2graph(city1, city2, miles):
         roudmap.add_node(city2)
     if city1 in roudmap:
         #print "Adding distance", miles
-        roudmap.add_edge(city1, city2, weigth=miles)
+        roudmap.add_edge(city1, city2, weight=miles)
 def findDirConnected():
     city = raw_input("Please enter the city to query\n").strip().lower()
     city = Town(city)
