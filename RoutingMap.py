@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 #This Python file uses the following encoding: utf-8
-#Author Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network
+__author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
 from collections import defaultdict
 import fileinput, optparse, string, os, sys, getopt
 try:
@@ -32,14 +32,10 @@ def parseFile(cityFile):  #building town object dictionary
                         while '' in info:
                             info.remove('')
                         city = Town(info[0]).lower()
-                        print "Found", city
                         city.agacent +=1
-                        city2 = Town(info[1]).lower()
-                        print "Found", city2
-                        milesBetwen = info[2]
                         if city not in cities:
                             cities.append(city)
-                        add2graph(city, city2, milesBetween)
+                        add2graph(info[0].lower(), info[1].lower(), info[-1])
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
         print "adding", city1
@@ -57,7 +53,7 @@ def userInput(): #getting user input
         #myInput = int(myInput)
         if myInput == 1:
             city = raw_input("Please enter the city to query\n").strip().lower()
-            if city in Town:
+            if city in cities:
                 print (city, " is agacent to ", city.agacent, " Cities")
             else:
                 print ("No city found try agian")
