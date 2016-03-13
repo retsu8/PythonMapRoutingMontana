@@ -1,7 +1,8 @@
 #!/usr/bin/python2.7
 #This Python file uses the following encoding: utf-8
 __author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
-from collections import defaultdict
+from collections import defaultdictS
+from collections import deque
 import fileinput, optparse, string, os, sys, getopt
 try:
     import networkx as nx
@@ -19,6 +20,16 @@ class Town: #building definition
         self.name = name
     agacent = 0
 
+def breadth_first_search(g, source):
+     queue = deque([(None, source)])
+     enqueued = set([source])
+     while queue:
+         parent, n = queue.popleft()
+         yield parent, n
+         new = set(g[n]) - enqueued
+         en queued |= new
+         queue.extend([(n, child) for child in new])
+
 def striplist(l):
     return([x.strip() for x in l])
 
@@ -33,7 +44,9 @@ def parseFile(cityFile):  #building town object dictionary
             info = filter(bool, info)
             if len(info) < 3:
                 continue
-            city = Town(info[0])
+            if city not in cities:
+                city = Town(info[0])
+                cities.append(city)
             city.agacent = city.agacent + 1
             add2graph(info[0], info[1], info[2])
     print "Done importing cities"
@@ -52,11 +65,11 @@ def add2graph(city1, city2, miles):
         roudmap.add_edge(city1, city2, weight=miles)
 def findDirConnected():
     city = raw_input("Please enter the city to query\n").strip().lower()
-    city = Town(city)
-    if city in cities:
-        print (city, " is agacent to ", city.agacent, " Cities")
-    else:
-        print ("No city found try agian")
+    for place in cities: # unpacking
+        if city == place:
+            print (city, " is agacent to ", city.agacent, " Cities")
+            return
+    print "No city found please try agian"
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
