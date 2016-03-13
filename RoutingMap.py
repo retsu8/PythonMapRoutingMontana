@@ -21,21 +21,22 @@ def striplist(l):
     return([x.strip() for x in l])
 
 def parseFile(cityFile):  #building town object dictionary
+    print 'adding cities'
     with open(cityFile,'r') as cityList:
         for line in cityList:
-            if not any(substring in line for substring in "From"):
-                if not any(substring in line for substring in '_'):
-                    if not line:
-                        line = line.replace('-','')
-                        info = line.split('   ')[0]
-                        info = striplist(info)
-                        while '' in info:
-                            info.remove('')
-                        city = Town(info[0]).lower()
-                        city.agacent +=1
-                        if city not in cities:
-                            cities.append(city)
-                        add2graph(info[0].lower(), info[1].lower(), info[-1])
+            print 'found', line
+            line = line.replace('-----------------------','')
+            info = line.split('   ')[0]
+            info = striplist(info)
+            while '' in info:
+                info.remove('')
+            print "adding", info[0]
+            city = Town(info[0]).lower()
+            print "setting agacency", cit.agacent
+            city.agacent +=1
+            if city not in cities:
+                cities.append(city)
+            add2graph(info[0].lower(), info[1].lower(), info[-1])
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
         print "adding", city1
@@ -46,24 +47,26 @@ def add2graph(city1, city2, miles):
     if city in roudmap:
         print "Adding distance", miles
         roudmap.add_edge(city1, city2, weigth=miles)
+def findDirConnected():
+    city = raw_input("Please enter the city to query\n").strip().lower()
+    if city in cities:
+        print (city, " is agacent to ", city.agacent, " Cities")
+    else:
+        print ("No city found try agian")
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
         myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
-        #myInput = int(myInput)
+        myInput = int(myInput)
         if myInput == 1:
-            city = raw_input("Please enter the city to query\n").strip().lower()
-            if city in cities:
-                print (city, " is agacent to ", city.agacent, " Cities")
-            else:
-                print ("No city found try agian")
+            findDirConnected()
         elif myInput == 2:
             print("Not yet Implemented")
         elif myInput == 3:
             print("Not yet Implemented")
         elif myInput == 4:
             print("Not yet Implemented")
-        else:
+        elif myInput not in range(0-4):
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
 
