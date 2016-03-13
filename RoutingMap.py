@@ -19,17 +19,6 @@ class Town: #building definition
     def __init__(self,name):
         self.name = name
 
-<<<<<<< HEAD
-#def breadth_first_search(g, source):
-#     queue = deque([(None, source)])
-#     enqueued = set([source])
-#     while queue:
-#         parent, n = queue.popleft()
-#         yield parent, n
-#         new = set(g[n]) - enqueued
-#         en queued |= new
-#         queue.extend([(n, child) for child in new])
-=======
 def breadth_first_search(g, source):
      queue = deque([(None, source)])
      enqueued = set([source])
@@ -39,16 +28,11 @@ def breadth_first_search(g, source):
          new = set(g[n]) - enqueued
          enqueued |= new
          queue.extend([(n, child) for child in new])
->>>>>>> refs/remotes/origin/Ryan
 
 def striplist(l):
     return([x.strip() for x in l])
 
 def parseFile(cityFile):  #building town object dictionary
-<<<<<<< HEAD
-    print 'adding city'
-    with open(cityFile,'r') as cityList:
-=======
     print 'adding cities'
     with open(cityFile) as cityList:
         intro = False
@@ -57,7 +41,6 @@ def parseFile(cityFile):  #building town object dictionary
             line = line.lower()
             if "from" in line:
                 intro = True
->>>>>>> refs/remotes/origin/Ryan
         for line in cityList:
             line = line.lower()
             line = line.replace('-----------------------','')
