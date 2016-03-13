@@ -6,8 +6,11 @@ import fileinput, optparse, string, os, sys, getopt
 try:
     import networkx as nx
 except ImportError, e:
-    pass # module doesn't exist, deal with it.
+    import pip
+    pip.main(['install', 'networkx'])
+    import networkx
 roudmap=nx.Graph()
+cities=list()
 class Town: #building definition
     def __init__(self, agacent):
         self.agacent = agacent
@@ -33,6 +36,8 @@ def parseFile(cityFile):  #building town object dictionary
                         city2 = Town(info[1]).lower()
                         print "Found", city2
                         milesBetwen = info[2]
+                        if city not in cities:
+                            cities.append(city)
                         add2graph(city, city2, milesBetween)
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
@@ -51,16 +56,16 @@ def userInput(): #getting user input
         #myInput = int(myInput)
         if myInput == 1:
             city = raw_input("Please enter the city to query\n").strip().lower()
-            if city in roudmap:
+            if city in Town:
                 print (city, " is agacent to ", city.agacent, " Cities")
             else:
                 print ("No city found try agian")
         elif myInput == 2:
-            print("Working on it")
+            print("Not yet Implemented")
         elif myInput == 3:
-            print("Working on it")
+            print("Not yet Implemented")
         elif myInput == 4:
-            print("Working on it")
+            print("Not yet Implemented")
         else:
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
