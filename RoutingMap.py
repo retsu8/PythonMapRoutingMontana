@@ -14,7 +14,7 @@ cities=list()
 class Town: #building definition
     def __init__(self,name):
         self.name = name
-        self.agacent = 0
+    agacent = 0
 
 def striplist(l):
     return([x.strip() for x in l])
@@ -24,22 +24,17 @@ def parseFile(cityFile):  #building town object dictionary
     with open(cityFile,'r') as cityList:
         for line in cityList:
             line = line.lower()
-            print 'found', line
-            if line.isspace():
-                continue
             line = line.replace('-----------------------','')
-            if line:
-                continue
             info = line.split('  ')
             info = striplist(info)
-            while '' in info:
-                info.remove('')
+            if len(info) < 3:
+                continue
             print "adding", info[0]
             city = Town(info[0])
             print "setting agacency", city.agacent
-            city.agacent +=1
-            if city not in cities:
-                cities.append(city)
+            city.agacent = city.agacent + 1
+            if info[0] not in cities:
+                cities.append(info[0])
             add2graph(info[0], info[1], info[-1])
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
