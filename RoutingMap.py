@@ -27,24 +27,26 @@ def parseFile(cityFile):  #building town object dictionary
             line = line.replace('-----------------------','')
             info = line.split('  ')
             info = striplist(info)
+            info = filter(bool, info)
             if len(info) < 3:
                 continue
-            print "adding", info[0]
+            print info
             city = Town(info[0])
-            print "setting agacency", city.agacent
             city.agacent = city.agacent + 1
-            if info[0] not in cities:
-                cities.append(info[0])
-            add2graph(info[0], info[1], info[-1])
+            add2graph(info[0], info[1], info[2])
+    print "Done importing cities"
+def map():
+    for n, e in zip(roudmap.nodes(), roudmap.edges(weight)):
+        print "City", n, "is", e, "away."
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
-        print "adding", city1
+        #print "adding", city1
         roudmap.add_node(city1)
     if city2 not in roudmap:
-        print "adding", city2
+        #print "adding", city2
         roudmap.add_node(city2)
     if city1 in roudmap:
-        print "Adding distance", miles
+        #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weigth=miles)
 def findDirConnected():
     city = raw_input("Please enter the city to query\n").strip().lower()
@@ -56,7 +58,7 @@ def findDirConnected():
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
-        myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n0: Quite\n")
+        myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n5:Print the map \n0: Quite\n")
         if myInput == '':
             print("Did not enter anything please try agian")
             myInput = int(1)
@@ -70,7 +72,9 @@ def userInput(): #getting user input
             print("Not yet Implemented")
         elif myInput == 4:
             print("Not yet Implemented")
-        elif myInput not in range(0-4):
+        elif myInput == 5:
+            map()
+        elif myInput not in range(0-5):
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
 
