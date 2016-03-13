@@ -81,7 +81,7 @@ def directConnection():
         else:
             if nx.path.bidirectional_dijkstra(roudmap,places[0],places[1]):
                 print "Yes", roudmap.edge[places[0]][places[1]]
-            except:
+            else:
                 print "No"
     return
 
