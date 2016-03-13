@@ -8,7 +8,7 @@ try:
 except ImportError, e:
     import pip
     pip.main(['install', 'networkx'])
-    import networkx
+    import networkx as nx
 roudmap=nx.Graph()
 cities=list()
 class Town: #building definition
