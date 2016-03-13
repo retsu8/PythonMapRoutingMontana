@@ -15,6 +15,8 @@ except ImportError, e:
         print "Cant install networkx please resolve this first"
 roudmap=nx.MultiGraph()
 cities=[]
+bad_chars = """[!@#$ -,)(*&^%<>?/\r\n"|{}=+.]:; """
+
 class Town: #building definition
     def __init__(self,name):
         self.name = name
@@ -66,6 +68,8 @@ def directConnection():
         places = raw_input("Please enter the cities to query\n or quit to exit: ").strip().lower()
         places = places.split()
         places = striplist(places)
+        for place in places:
+            place=place.translate(string.maketrans("", "", ), bad_chars)
         if len(places) != 2:
             print "Wrong amount of places please try agian"
             return
