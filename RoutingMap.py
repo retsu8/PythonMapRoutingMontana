@@ -79,8 +79,7 @@ def directConnection():
             print "Wrong amount of places please try agian"
             return
         else:
-            try:
-                roudmap.edge[places[0]][places[1]]
+            if nx.path.bidirectional_dijkstra(roudmap,places[0],places[1]):
                 print "Yes", roudmap.edge[places[0]][places[1]]
             except:
                 print "No"
@@ -115,11 +114,10 @@ def checkKhop():
             print "Wrong amount of entries please try agian"
             return
         else:
-            try:
-                roudmap.edge[places[0]][places[1]]
+            if nx.path.bidirectional_dijkstra(roudmap,places[0],places[1]):
                 print "Yes, 1", roudmap.edge[places[0]][places[1]]
-            except:
-                print "No"
+            else:
+                print breadth_first_search(places[1], places[0])
     return
 
 def userInput(): #getting user input
