@@ -41,6 +41,7 @@ def parseFile(cityFile):  #building town object dictionary
             line = cityList.readline()
             line = line.lower()
             if "from" in line:
+                cityList.readline()
                 intro = True
         for line in cityList:
             line = line.lower()
