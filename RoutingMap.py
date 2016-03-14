@@ -79,9 +79,10 @@ def directConnection():
             print "Wrong amount of places please try agian"
             return
         else:
-            if nx.path.bidirectional_dijkstra(roudmap,places[0],places[1]):
+            try:
+                roudmap.edge[places[0]][places[1]]
                 print "Yes", roudmap.edge[places[0]][places[1]]
-            else:
+            except:
                 print "No"
     return
 
@@ -150,6 +151,8 @@ def main(argv): #main argv for input
         opts, args = getopt.getopt(sys.argv[1:],"f:",["file="])
     except getopt.GetoptError:
         print ("RoutingMap.py -f <file>")
+
+
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
