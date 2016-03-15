@@ -130,7 +130,11 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 roudmap.edge[places[0]][places[1]]
                 print roudmap.edge[places[0]][places[1]]
             except:
-                print nx.shortest_path(roudmap,source=places[0],target=places[1])
+                distance = 0
+                path = nx.shortest_path(roudmap,source=places[0],target=places[1])
+                for idx, item in enumerate(path):
+                    distance += roudmap[item][item.next][weight]
+                print path, distance
                 #print cities, len(cities)
     return
 
