@@ -25,15 +25,22 @@ def mystrip(strg): #strip &bad_char from string
     """
     return strg.translate(string.maketrans("", "", ), bad_chars)
 
-def breadth_first_search(source, destination, neighbors, path): #breadth_first_search algorithm for finding path to nodes
+def breadth_first_search(source, destination): #breadth_first_search algorithm for finding path to nodes
      print "Finding fewest hops to ", destination, "from", source
-     if destination not in neighbors:
-        for place in neighbors:
-            if place in path:
-                continue
-            path = breadth_first_search(place, destination, nx.neighbors(roudmap, source), path)
-     else:
-         return path.append(source)
+     path = list()
+     path = path.append(source)
+     neighbors = nx.neighbors(roudmap, source)
+     def recursion(source, destination, path, neighbors)
+         if destination not in neighbors:
+            for place in neighbors:
+                if place == destination:
+                    return path.append(place)
+                if place in path:
+                    continue
+                else:
+                    path.append(place)
+     recursion(source, destination, path, neighbors)
+     return path
 
 
 def striplist(l): #remove white space from list
@@ -122,8 +129,7 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 roudmap.edge[places[0]][places[1]]
                 print roudmap.edge[places[0]][places[1]]
             except:
-                path = list()
-                cities = breadth_first_search(places[0], places[1], nx.neighbors(roudmap, places[0]), path.append(places[0]))
+                cities = breadth_first_search(places[0], places[1])
                 print cities, len(cities)
     return
 
