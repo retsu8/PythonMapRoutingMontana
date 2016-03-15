@@ -49,9 +49,12 @@ def parseFile(cityFile):  #building town object dictionary
             info = line.split('  ')
             info = striplist(info)
             info = filter(bool, info)
-            print info
+            
+            
             if len(info) < 3:
                 continue
+            city = Town(info[0])
+            print info
             if city not in cities:
                 city = Town(info[0])
                 cities.append(city)
@@ -81,7 +84,13 @@ def findDirConnected():
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
-        myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print direct connection \n5:Print the map \n0: Quite\n")
+        myInput = raw_input("What would you like to do:\n" +
+                            "1:query directly connected cites: \n" +
+                            "2:Look for direct connections: \n" +
+                            "3:caclulate the k-hop connection: \n" +
+                            "4:Given two query cities print direct connection \n" +
+                            "5:Print the map \n" +
+                            "0: Quit\n")
         if myInput == '':
             print("Did not enter anything please try agian")
             myInput = int(1)
