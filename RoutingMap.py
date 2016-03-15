@@ -53,12 +53,7 @@ def parseFile(cityFile):  #building town object dictionary
             
             if len(info) < 3:
                 continue
-            city = Town(info[0])
-            print info
-            if city not in cities:
-                city = Town(info[0])
-                cities.append(city)
-            city.agacent = city.agacent + 1
+            
             add2graph(info[0], info[1], info[2])
     print "Done importing cities"
 def map():
@@ -75,10 +70,16 @@ def add2graph(city1, city2, miles):
         #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weight=miles)
 def findDirConnected():
+    print len(cities) #debugging
     city = raw_input("Please enter the city to query\n").strip().lower()
-    for place in cities: # unpacking
+    for place in roudmap.nodes():
         if city == place:
-            print (city, " is agacent to ", city.agacent, " Cities")
+            print "%s is adjacent to %s cities" % (city, len(roudmap.edges(place)))
+            #print (city + " is adjacent to " + len(roudmap.edges(place)) + " cities")
+            return
+    for place in cities: # unpacking
+        if city == place.name:
+            print (city, " is agacent to ", place.agacent, " cities")
             return
     print "No city found please try agian"
 def userInput(): #getting user input
@@ -96,7 +97,9 @@ def userInput(): #getting user input
             myInput = int(1)
             continue
         myInput = int(myInput)
-        if myInput == 1:
+        if myInput == 0:
+            continue
+        elif myInput == 1:
             findDirConnected()
         elif myInput == 2:
             print("Not yet Implemented")
