@@ -56,7 +56,7 @@ def parseFile(cityFile):  #building town object dictionary
             info = filter(bool, info)
             if len(info) < 3:
                 continue
-            
+
             add2graph(info[0], info[1], info[2])
     print "Done importing cities", cities
 def map(): #print map of graph
@@ -91,13 +91,6 @@ def add2graph(city1, city2, miles): #add lots of stuff to graph, building graph
     if city1 in roudmap:
         #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weight=miles)
-<<<<<<< HEAD
-def quarryAgacent(): # see how many towns are agecent to the chosen town
-    city = raw_input("Please enter the city to query\n").strip().lower()
-    if city in cities:
-        print city, " is agacent to ", len(roudmap.edges(city)), " Cities"
-        return
-=======
 def findDirConnected():
     print len(cities) #debugging
     city = raw_input("Please enter the city to query\n").strip().lower()
@@ -110,7 +103,6 @@ def findDirConnected():
         if city == place.name:
             print (city, " is agacent to ", place.agacent, " cities")
             return
->>>>>>> refs/remotes/origin/Ryan
     print "No city found please try agian"
 def checkKhop(): #c if possible to reace destination from starting point within d times
     places = ""
@@ -147,15 +139,10 @@ def userInput(): #getting user input
             myInput = int(1)
             continue
         myInput = int(myInput)
-<<<<<<< HEAD
-        if myInput == 1:
-            quarryAgacent()
-=======
         if myInput == 0:
             continue
         elif myInput == 1:
             findDirConnected()
->>>>>>> refs/remotes/origin/Ryan
         elif myInput == 2:
             directConnection()
         elif myInput == 3:
