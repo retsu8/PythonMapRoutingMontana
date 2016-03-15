@@ -46,6 +46,7 @@ def parseFile(cityFile):  #building town object dictionary
             line = cityList.readline()
             line = line.lower()
             if "from" in line:
+                cityList.readline()
                 intro = True
         for line in cityList:
             line = line.lower()
@@ -55,12 +56,12 @@ def parseFile(cityFile):  #building town object dictionary
             info = filter(bool, info)
             if len(info) < 3:
                 continue
-            if info[0] not in cities:
-                city1 = Town(info[0])
-                cities.append(info[0])
-            if info[1] not in cities:
-                city2 = Town(info[1])
-                cities.append(info[1])
+            city = Town(info[0])
+            print info
+            if city not in cities:
+                city = Town(info[0])
+                cities.append(city)
+            city.agacent = city.agacent + 1
             add2graph(info[0], info[1], info[2])
     print "Done importing cities", cities
 def map(): #print map of graph
@@ -124,7 +125,13 @@ def checkKhop(): #c if possible to reace destination from starting point within 
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
-        myInput = raw_input("What would you like to do:\n1:query directly connected cites: \n2:Look for direct connections: \n3:caclulate the k-hop connection: \n4:Given two query cities print ability to connect \n5:Print the map \n0: Quite\n")
+        myInput = raw_input("What would you like to do:\n" +
+                            "1:query directly connected cites: \n" +
+                            "2:Look for direct connections: \n" +
+                            "3:caclulate the k-hop connection: \n" +
+                            "4:Given two query cities print direct connection \n" +
+                            "5:Print the map \n" +
+                            "0: Quit\n")
         if myInput == '':
             print("Did not enter anything please try agian")
             myInput = int(1)
