@@ -13,7 +13,7 @@ except ImportError, e:
     except ImportError, e:
         print "Cant install networkx please resolve this first"
 roudmap=nx.MultiGraph() #setting up graph for MultiGraph
-cities=[] #list of cities in graph
+cities=[] #list of cities for k-hop route
 bad_chars = """[!@#$ -,)(*&^%<>?/\r\n"|{}=+.]:; """ #list of char to remove from city names
 
 class Town: #building city object for Town
@@ -25,14 +25,15 @@ def mystrip(strg): #strip &bad_char from string
     """
     return strg.translate(string.maketrans("", "", ), bad_chars)
 
-def breadth_first_search(source, destination, neighbors): #breadth_first_search algorithm for finding path to nodes
+def breadth_first_search(source, destination, neighbors, path): #breadth_first_search algorithm for finding path to nodes
      print "Finding fewest hops to ", destination, "from", source
-     neighbors = nx.neighbors(roudmap, source)
      if destination not in neighbors:
-        for place in neighbors
-            breadth_first_search(place, destination)
+        for place in neighbors:
+            if place in path:
+                continue
+            path = breadth_first_search(place, destination, nx.neighbors(roudmap, source), path)
      else:
-         return route.append(source)
+         return path.append(source)
 
 
 def striplist(l): #remove white space from list
@@ -121,7 +122,9 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 roudmap.edge[places[0]][places[1]]
                 print roudmap.edge[places[0]][places[1]]
             except:
-                breadth_first_search(places[0], places[1], None)
+                path = list()
+                cities = breadth_first_search(places[0], places[1], nx.neighbors(roudmap, places[0]), path.append(places[0]))
+                print cities, len(cities)
     return
 
 def userInput(): #getting user input
