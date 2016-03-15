@@ -68,12 +68,12 @@ def directConnection(): #find if town a is directly connected to town b
         places = raw_input("Please enter the cities to query\n or quit to exit: ").strip().lower()
         places = places.split()
         places = striplist(places)
-        places[0]=mystrip(places[0])
-        places[1]=mystrip(places[1])
         if len(places) != 2:
             print "Wrong amount of places please try agian"
             return
         else:
+            places[0]=mystrip(places[0])
+            places[1]=mystrip(places[1])
             try:
                 roudmap.edge[places[0]][places[1]]
                 print "Yes", roudmap.edge[places[0]][places[1]]
