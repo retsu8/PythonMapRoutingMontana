@@ -134,12 +134,11 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 place_old = None
                 path = nx.shortest_path(roudmap,source=places[0],target=places[1], weight=d)
                 for place in path:
-                    try:
-                        distance += roudmap.edge[place_old][place]['weight']
+                    if place_old == None:
                         place_old = place
-                    except:
-                        place_old = place
-                        continue
+                    print roudmap.edge[place_old][place]{'weight'}
+                    distance = distance + roudmap.edge[place_old][place]['weight']
+                    place_old = place
                 if len(path) > d:
                     print "Not possible in ", d, "hops\n0"
                 print "The shortest path is", path, "at ", len(path), "hops.\nThe distence is", distance
