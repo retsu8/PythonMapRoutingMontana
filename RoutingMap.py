@@ -116,11 +116,12 @@ def findDirConnected():
 def checkKhop(): #c if possible to reace destination from starting point within d times
     places = ""
     while places != quit:
-        places = raw_input("Please enter the cities to query and the number of hops\n or quit to exit: ").strip().lower()
-        places = places.split()
+        places = raw_input("Please enter the cities to query and the number of hops space with commas\n or quit to exit: ").strip().lower()
+        places = places.split(',')
         places = striplist(places)
+        print places
         if len(places) != 3:
-            print "Wrong amount of entries please try agian"
+            print "Wrong amount of entries please try agian, did you forget the comma?"
             return
         else:
             places[0]=mystrip(places[0])
@@ -131,10 +132,8 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 print roudmap.edge[places[0]][places[1]]
             except:
                 distance = 0
-                path = nx.shortest_path(roudmap,source=places[0],target=places[1])
-                for idx, item in enumerate(path):
-                    distance += roudmap[item][item.next][weight]
-                print path, distance
+                path = nx.shortest_path(roudmap,source=places[0],target=places[1], weight=d)
+                print path
                 #print cities, len(cities)
     return
 
