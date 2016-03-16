@@ -119,7 +119,6 @@ def checkKhop(): #c if possible to reace destination from starting point within 
         places = raw_input("Please enter the cities to query and the number of hops space with commas\n or quit to exit: ").strip().lower()
         places = places.split(',')
         places = striplist(places)
-        print places
         if len(places) != 3:
             print "Wrong amount of entries please try agian, did you forget the comma?"
             return
@@ -132,9 +131,18 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 print roudmap.edge[places[0]][places[1]]
             except:
                 distance = 0
+                place_old = None
                 path = nx.shortest_path(roudmap,source=places[0],target=places[1], weight=d)
-                print path
-                #print cities, len(cities)
+                for place in path:
+                    try:
+                        distance += roudmap.edge[place_old][place]['weight']
+                        place_old = place
+                    except:
+                        place_old = place
+                        continue
+                if len(path) > d:
+                    print "Not possible in ", d, "hops\n0"
+                print "The shortest path is", path, "at ", len(path), "hops.\nThe distence is", distance
     return
 
 def userInput(): #getting user input
