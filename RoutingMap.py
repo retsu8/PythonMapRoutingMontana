@@ -66,7 +66,7 @@ def parseFile(cityFile):  #building town object dictionary
             if len(info) < 3:
                 continue
 
-            add2graph(info[0], info[1], info[2])
+            add2graph(info[0], info[1], int(info[2]))
     print "Done importing cities", cities
 def map(): #print map of graph
     for n1, n2, attr in roudmap.edges(data=True): # unpacking
@@ -74,11 +74,11 @@ def map(): #print map of graph
 def directConnection(): #find if town a is directly connected to town b
     places = ""
     while places != quit:
-        places = raw_input("Please enter the cities to query\n or quit to exit: ").strip().lower()
-        places = places.split()
+        places = raw_input("Please enter the cities to query, split with comma\n or quit to exit: ").strip().lower()
+        places = places.split(",")
         places = striplist(places)
         if len(places) != 2:
-            print "Wrong amount of places please try agian"
+            print "Wrong amount of entries please try agian, did you forget the comma?"
             return
         else:
             places[0]=mystrip(places[0])
@@ -113,6 +113,7 @@ def findDirConnected():
             print (city, " is agacent to ", place.agacent, " cities")
             return
     print "No city found please try agian"
+
 def checkKhop(): #c if possible to reace destination from starting point within d times
     places = ""
     while places != quit:
@@ -136,12 +137,33 @@ def checkKhop(): #c if possible to reace destination from starting point within 
                 for place in path:
                     if place_old == None:
                         place_old = place
-                    print roudmap.edge[place_old][place]{'weight'}
+                    print roudmap.edge[place_old][place]['weight']
                     distance = distance + roudmap.edge[place_old][place]['weight']
                     place_old = place
                 if len(path) > d:
                     print "Not possible in ", d, "hops\n0"
                 print "The shortest path is", path, "at ", len(path), "hops.\nThe distence is", distance
+    return
+
+def checkConnection():
+    places = ""
+    while places != quit:
+        places = raw_input("Please enter the cities to query, split with comma\n or quit to exit: ").strip().lower()
+        places = places.split(",")
+        places = striplist(places)
+        if len(places) != 2:
+            print "Wrong amount of entries please try agian, did you forget the comma?"
+            return
+        else:
+            places[0]=mystrip(places[0])
+            places[1]=mystrip(places[1])
+            try:
+                roudmap.edge[places[0]][places[1]]
+                print roudmap.edge[places[0]][places[1]]
+            except:
+                place_old = None
+                path = nx.bidirectional_dijkstra(roudmap,source=places[0],target=places[1])
+                print "The shortest path is", path
     return
 
 def userInput(): #getting user input
@@ -168,7 +190,7 @@ def userInput(): #getting user input
         elif myInput == 3:
             checkKhop()
         elif myInput == 4:
-            print("Not yet Implemented")
+            checkConnection()
         elif myInput == 5:
             map()
         elif myInput not in range(0-5):
