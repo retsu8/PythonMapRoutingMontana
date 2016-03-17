@@ -14,7 +14,7 @@ except ImportError, e:
         print "Cant install networkx please resolve this first"
 roudmap=nx.MultiGraph() #setting up graph for MultiGraph
 cities=[] #list of cities for k-hop route
-bad_chars = """[!@#$ -,)(*&^%<>?/\r\n"|{}=+.]:; """ #list of char to remove from city names
+bad_chars = """[!@#$-,)(*&^%<>?/\r\n"|{}=+.]:;""" #list of char to remove from city names
 
 class Town: #building city object for Town
     def __init__(self,name):
@@ -24,25 +24,6 @@ def mystrip(strg): #strip &bad_char from string
     Strips bad characters from a string.
     """
     return strg.translate(string.maketrans("", "", ), bad_chars)
-
-'''
-def breadth_first_search(source, destination): #breadth_first_search algorithm for finding path to nodes
-     print "Finding fewest hops to ", destination, "from", source
-     path = list()
-     path = path.append(source)
-     neighbors = nx.neighbors(roudmap, source)
-     def recursion(source, destination, path, neighbors): #recursion piece for search
-         if destination not in neighbors:
-            for place in neighbors:
-                if place == destination:
-                    return path.append(place)
-                if place in path:
-                    continue
-                else:
-                    recursion(place, destination, path nx.neighbors(roudmap,source))
-     recursion(source, destination, path, neighbors)
-     return path
-'''
 
 def striplist(l): #remove white space from list
     return([x.strip() for x in l])
