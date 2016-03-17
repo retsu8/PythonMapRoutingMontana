@@ -87,7 +87,6 @@ def findDirConnected():
     for place in roudmap.nodes():
         if city == place:
             print "%s is adjacent to %s cities" % (city, len(roudmap.edges(place)))
-            #print (city + " is adjacent to " + len(roudmap.edges(place)) + " cities")
             return
     for place in cities: # unpacking
         if city == place.name:
