@@ -1,6 +1,6 @@
 #!/usr/bin/python2.7
 #This Python file uses the following encoding: utf-8
-__author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
+__author__ = """\n""".join(['William Paddock and Ryan Darnell CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
 from collections import defaultdict
 from collections import deque
 import fileinput, optparse, string, os, sys, getopt
@@ -15,6 +15,7 @@ except ImportError, e:
         print "Cant install networkx please resolve this first"
 roudmap=nx.Graph()
 cities=list()
+#global path
 class Town: #building definition
     def __init__(self,name):
         self.name = name
@@ -70,18 +71,115 @@ def add2graph(city1, city2, miles):
         #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weight=miles)
 def findDirConnected():
-    print len(cities) #debugging
+    
     city = raw_input("Please enter the city to query\n").strip().lower()
     for place in roudmap.nodes():
         if city == place:
             print "%s is adjacent to %s cities" % (city, len(roudmap.edges(place)))
             #print (city + " is adjacent to " + len(roudmap.edges(place)) + " cities")
             return
-    for place in cities: # unpacking
-        if city == place.name:
-            print (city, " is agacent to ", place.agacent, " cities")
-            return
-    print "No city found please try agian"
+    print "No city found!\n"
+
+def isDirectConnection(city1, city2):
+    if roudmap.has_edge(city1, city2):
+        print "%s is directly connected to %s" % (city1, city2)
+    else:
+        print "No connection found between %s and %s" % (city1, city2)
+
+
+
+def kHopping(city1, target, currentK, totalK, path):
+    path.append(city1)
+    if city1 == target:
+        print ("if1 taken with %s as current") % city1
+        if currentK <= totalK:
+            print ("The following path will take you to %s from %s\n") % (target, path[0])
+            for city in path:
+                print (" %s -->") % city
+
+            path = [];
+            return True
+        else:
+            print ("No path was found within the specified distance")
+            return False
+    elif (currentK > totalK):
+        print ("No path was found within the specified distance")
+        return False
+    elif roudmap.has_edge(city1, target):
+        return kHopping(target, target, (currentK + int(roudmap.get_edge_data(city1,target)["weight"])), totalK, path)
+    else:
+        for current in roudmap.neighbors(city1):
+            if kHopping(current, target, (currentK + int(roudmap.get_edge_data(city1,current)["weight"])), totalK, path):
+                return True
+
+def kHoppingWhilst(origin, targetCity, totalK):
+    path = [origin]
+    network = []
+    foundPath = False
+    lastCity = origin
+    currentCity = origin
+    currentK = 0
+
+    #Build starting network
+    neighbors = []
+    for neighborino in roudmap.neighbors(origin):
+        neighbors.append(neighborino)
+    network.append(neighbors)
+    
+    while len(network) > 0:
+        #update currentCity
+        lastCity = currentCity
+        #grab next element from the neighbor list
+        if len(network[len(network)-1]) > 0:
+            currentCity = network[len(network)-1].pop()
+            print ("Current: %s") % currentCity
+            print ("Last: %s\n") % lastCity
+        #neighbor list is depleted. jump up a neighbor
+        else:
+            network.pop()
+            currentCity = path[len(path)-1]
+            continue
+            print ("Current: %s") % currentCity
+            print ("Last: %s\n") % lastCity
+        path.append(currentCity)
+        currentK = currentK + int(roudmap.get_edge_data(lastCity,currentCity)["weight"])
+
+            
+        if currentCity == targetCity:
+            if currentK <= totalK:
+                print ("The following path will take you to %s from %s\n") % (targetCity, origin)
+                for city in path:
+                    print (" %s -->") % city
+                path = [];
+                pathFound = True
+                break
+            else:
+                currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
+                path.pop()
+                print("Close but too large")
+                currentCity = path[len(path)-1]
+                continue
+        elif currentK > totalK:
+            currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
+            path.pop()
+            print ("Too Large")
+            currentCity = path[len(path)-1]
+            continue
+        elif roudmap.has_edge(currentCity, targetCity):
+            neighbors = [targetCity]
+            network.append(neighbors)
+        else:
+            neighbors = []
+            for neighborino in roudmap.neighbors(currentCity):
+                if neighborino != lastCity and neighborino != currentCity:
+                    neighbors.append(neighborino)
+            print len(neighbors)
+            network.append(neighbors)
+
+    if not pathFound:
+        print ("No path found from %s to %s in %s miles") % (origin, targetCity, totalK)
+        
+    
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
@@ -102,9 +200,16 @@ def userInput(): #getting user input
         elif myInput == 1:
             findDirConnected()
         elif myInput == 2:
-            print("Not yet Implemented")
+            city1 = raw_input("List the first city:  ")
+            city2 = raw_input("List the second city: ")
+            isDirectConnection(city1.lower(), city2.lower())
         elif myInput == 3:
-            print("Not yet Implemented")
+            city1 = raw_input("List the first city:  ")
+            target = raw_input("List the second city: ")
+            k_hop = raw_input("Set the max distance: ")
+            path = []
+            #kHopping(city1.lower(), target.lower(), 0, int(k_hop), path)
+            kHoppingWhilst(city1.lower(), target.lower(), int(k_hop))
         elif myInput == 4:
             print("Not yet Implemented")
         elif myInput == 5:
