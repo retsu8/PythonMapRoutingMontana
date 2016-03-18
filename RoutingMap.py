@@ -122,23 +122,33 @@ def kHoppingWhilst(origin, targetCity, totalK):
 
     #Build starting network
     neighbors = []
+    neighbors.append(origin)
     for neighborino in roudmap.neighbors(origin):
-        neighbors.append(neighborino)
+        if neighborino != lastCity and neighborino != currentCity:
+            neighbors.append(neighborino)
     network.append(neighbors)
     
     while len(network) > 0:
         #update currentCity
-        lastCity = currentCity
+        lastCity = network[len(network)-1][0]
         #grab next element from the neighbor list
-        if len(network[len(network)-1]) > 0:
+        if len(network[len(network)-1]) > 1:
             currentCity = network[len(network)-1].pop()
-            print ("Current: %s") % currentCity
-            print ("Last: %s\n") % lastCity
+            #print ("Current: %s") % currentCity
+            #print ("Last: %s\n") % lastCity
         #neighbor list is depleted. jump up a neighbor
         else:
             network.pop()
-            currentCity = path[len(path)-1]
-            continue
+            lastCity = path.pop()
+            if len(network)!=0:
+                #lastCity = currentCity
+                currentCity = network[len(network)-1][0] #path[len(path)-1]
+                currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
+                continue
+            else: #list empty, so break
+                print "No path found"
+                foundPath = False
+                break
             print ("Current: %s") % currentCity
             print ("Last: %s\n") % lastCity
         path.append(currentCity)
@@ -151,32 +161,37 @@ def kHoppingWhilst(origin, targetCity, totalK):
                 for city in path:
                     print (" %s -->") % city
                 path = [];
-                pathFound = True
+                foundPath = True
                 break
             else:
+                print ("%s to %s in length: %s") % (lastCity, targetCity, currentK)
+                print path
                 currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
                 path.pop()
-                print("Close but too large")
-                currentCity = path[len(path)-1]
+                
+                #print("Close but too large")
+                currentCity = network[len(network)-1][0] #path[len(path)-1]
                 continue
         elif currentK > totalK:
             currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
             path.pop()
-            print ("Too Large")
-            currentCity = path[len(path)-1]
+            #print ("Too Large")
+            currentCity = network[len(network)-1][0] #path[len(path)-1]
             continue
         elif roudmap.has_edge(currentCity, targetCity):
-            neighbors = [targetCity]
+            neighbors = [currentCity, targetCity]
             network.append(neighbors)
         else:
             neighbors = []
+            #keep track of city that was branched
+            neighbors.append(currentCity)
             for neighborino in roudmap.neighbors(currentCity):
                 if neighborino != lastCity and neighborino != currentCity:
                     neighbors.append(neighborino)
-            print len(neighbors)
+            #print len(neighbors)
             network.append(neighbors)
 
-    if not pathFound:
+    if not foundPath:
         print ("No path found from %s to %s in %s miles") % (origin, targetCity, totalK)
         
     
