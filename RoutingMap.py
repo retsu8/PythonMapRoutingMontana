@@ -1,17 +1,10 @@
 #!/usr/bin/python2.7
 #This Python file uses the following encoding: utf-8
-<<<<<<< HEAD
-__author__ = """\n""".join(['Will CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
-from collections import defaultdict, deque
-import fileinput, string, optparse, os, sys, getopt, re
-try: #checking to make sure networkx is installed
-=======
 __author__ = """\n""".join(['William Paddock and Ryan Darnell CSCI 305 Programming Lab 2 — Reconstructing Montana’s Road Network'])
 from collections import defaultdict
 from collections import deque
 import fileinput, optparse, string, os, sys, getopt
 try:
->>>>>>> refs/remotes/origin/Ryan
     import networkx as nx
 except ImportError, e:
     try: #if not installed install it
@@ -20,27 +13,11 @@ except ImportError, e:
         import networkx as nx
     except ImportError, e:
         print "Cant install networkx please resolve this first"
-<<<<<<< HEAD
-roudmap=nx.MultiGraph() #setting up graph for MultiGraph
-cities=[] #list of cities for k-hop route
-bad_chars = """[!@#$-,)(*&^%<>?/\r\n"|{}=+.]:;""" #list of char to remove from city names
 
-class Town: #building city object for Town
-    def __init__(self,name):
-        self.name = name
-def mystrip(strg): #strip &bad_char from string
-    """
-    Strips bad characters from a string.
-    """
-    return strg.translate(string.maketrans("", "", ), bad_chars)
-
-def striplist(l): #remove white space from list
-=======
 roudmap=nx.Graph()
 cities=list()
 
 def striplist(l):
->>>>>>> refs/remotes/origin/Ryan
     return([x.strip() for x in l])
 
 def parseFile(cityFile):  #building town object dictionary
@@ -61,44 +38,15 @@ def parseFile(cityFile):  #building town object dictionary
             info = filter(bool, info)
             if len(info) < 3:
                 continue
-<<<<<<< HEAD
 
-            add2graph(info[0], info[1], int(info[2]))
-    print "Done importing cities", cities
-def map(): #print map of graph
-    for n1, n2, attr in roudmap.edges(data=True): # unpacking
-        print n1, n2, attr['weight']
-def directConnection(): #find if town a is directly connected to town b
-    places = ""
-    while places != quit:
-        places = raw_input("Please enter the cities to query, split with comma\n or quit to exit: ").strip().lower()
-        places = places.split(",")
-        places = striplist(places)
-        if len(places) != 2:
-            print "Wrong amount of entries please try agian, did you forget the comma?"
-            return
-        else:
-            places[0]=mystrip(places[0])
-            places[1]=mystrip(places[1])
-            try:
-                roudmap.edge[places[0]][places[1]]
-                print "Yes", roudmap.edge[places[0]][places[1]]
-            except:
-                print "No"
-    return
-
-def add2graph(city1, city2, miles): #add lots of stuff to graph, building graph
-=======
-            
             add2graph(info[0], info[1], info[2])
     print "Done importing cities\n"
-    
+
 def map():
     for n1, n2, attr in roudmap.edges(data=True): # unpacking
         print n1, n2, attr['weight']
-        
+
 def add2graph(city1, city2, miles):
->>>>>>> refs/remotes/origin/Ryan
     if city1 not in roudmap:
         #print "adding", city1
         roudmap.add_node(city1)
@@ -109,74 +57,13 @@ def add2graph(city1, city2, miles):
         #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weight=miles)
 
-        
+
 def findDirConnected():
-    
     city = raw_input("Please enter the city to query\n").strip().lower()
     for place in roudmap.nodes():
         if city == place:
             print "%s is adjacent to %s cities" % (city, len(roudmap.edges(place)))
             return
-<<<<<<< HEAD
-    for place in cities: # unpacking
-        if city == place.name:
-            print (city, " is agacent to ", place.agacent, " cities")
-            return
-    print "No city found please try agian"
-
-def checkKhop(): #c if possible to reace destination from starting point within d times
-    places = ""
-    while places != quit:
-        places = raw_input("Please enter the cities to query and the number of hops space with commas\n or quit to exit: ").strip().lower()
-        places = places.split(',')
-        places = striplist(places)
-        if len(places) != 3:
-            print "Wrong amount of entries please try agian, did you forget the comma?"
-            return
-        else:
-            places[0]=mystrip(places[0])
-            places[1]=mystrip(places[1])
-            d = places[2]
-            try:
-                roudmap.edge[places[0]][places[1]]
-                print roudmap.edge[places[0]][places[1]]
-            except:
-                distance = 0
-                place_old = None
-                path = nx.shortest_path(roudmap,source=places[0],target=places[1], weight=d)
-                for place in path:
-                    if place_old == None:
-                        place_old = place
-                    print roudmap.edge[place_old][place]['weight']
-                    distance = distance + roudmap.edge[place_old][place]['weight']
-                    place_old = place
-                if len(path) > d:
-                    print "Not possible in ", d, "hops\n0"
-                print "The shortest path is", path, "at ", len(path), "hops.\nThe distence is", distance
-    return
-
-def checkConnection():
-    places = ""
-    while places != quit:
-        places = raw_input("Please enter the cities to query, split with comma\n or quit to exit: ").strip().lower()
-        places = places.split(",")
-        places = striplist(places)
-        if len(places) != 2:
-            print "Wrong amount of entries please try agian, did you forget the comma?"
-            return
-        else:
-            places[0]=mystrip(places[0])
-            places[1]=mystrip(places[1])
-            try:
-                roudmap.edge[places[0]][places[1]]
-                print roudmap.edge[places[0]][places[1]]
-            except:
-                place_old = None
-                path = nx.bidirectional_dijkstra(roudmap,source=places[0],target=places[1])
-                print "The shortest path is", path
-    return
-
-=======
     print "No city found!\n"
 
 def isDirectConnection(city1, city2):
@@ -200,7 +87,7 @@ def kHopping(origin, targetCity, totalK):
         if neighborino != lastCity and neighborino != currentCity:
             neighbors.append(neighborino)
     network.append(neighbors)
-    
+
     while len(network) > 0:
         #update currentCity
         lastCity = network[len(network)-1][0]
@@ -212,7 +99,7 @@ def kHopping(origin, targetCity, totalK):
             network.pop()
             lastCity = path.pop()
             if len(network)!=0:
-                currentCity = network[len(network)-1][0] 
+                currentCity = network[len(network)-1][0]
                 currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
                 continue
             else: #list empty, so break
@@ -221,10 +108,10 @@ def kHopping(origin, targetCity, totalK):
         path.append(currentCity)
         currentK = currentK + int(roudmap.get_edge_data(lastCity,currentCity)["weight"])
 
-            
+
         if currentCity == targetCity:
             if currentK <= totalK:
-                
+
                 pathway = origin
                 path.pop(0)
                 for city in path:
@@ -238,12 +125,12 @@ def kHopping(origin, targetCity, totalK):
             else:
                 currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
                 path.pop()
-                currentCity = network[len(network)-1][0] 
+                currentCity = network[len(network)-1][0]
                 continue
         elif currentK > totalK:
             currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
             path.pop()
-            currentCity = network[len(network)-1][0] 
+            currentCity = network[len(network)-1][0]
             continue
         elif roudmap.has_edge(currentCity, targetCity):
             neighbors = [currentCity, targetCity]
@@ -274,7 +161,7 @@ def isConnected(origin, targetCity):
         if neighborino != lastCity and neighborino != currentCity:
             neighbors.append(neighborino)
     network.append(neighbors)
-    
+
     while len(network) > 0:
         #update currentCity
         lastCity = network[len(network)-1][0]
@@ -286,13 +173,13 @@ def isConnected(origin, targetCity):
             network.pop()
             lastCity = path.pop()
             if len(network)!=0:
-                currentCity = network[len(network)-1][0] 
+                currentCity = network[len(network)-1][0]
                 continue
             else: #list empty, so break
                 foundPath = False
                 break
         path.append(currentCity)
-            
+
         if currentCity == targetCity:
             pathway = origin
             path.pop(0)
@@ -307,7 +194,7 @@ def isConnected(origin, targetCity):
         elif roudmap.has_edge(currentCity, targetCity):
             neighbors = [currentCity, targetCity]
             network.append(neighbors)
-            
+
         else:
             if len(network) < 4:
                 neighbors = []
@@ -321,8 +208,6 @@ def isConnected(origin, targetCity):
     if not foundPath:
         print ("\nNO: No path found from %s to %s in %s within miles") % (origin, targetCity, totalK)
 
-    
->>>>>>> refs/remotes/origin/Ryan
 def userInput(): #getting user input
     myInput = int(1)
     while (myInput != 0):
@@ -343,13 +228,6 @@ def userInput(): #getting user input
         elif myInput == 1:
             findDirConnected()
         elif myInput == 2:
-<<<<<<< HEAD
-            directConnection()
-        elif myInput == 3:
-            checkKhop()
-        elif myInput == 4:
-            checkConnection()
-=======
             city1 = raw_input("List the first city:  ")
             city2 = raw_input("List the second city: ")
             if roudmap.has_node(city1) and roudmap.has_node(city2):
@@ -375,7 +253,6 @@ def userInput(): #getting user input
                 print "Sorry, one or more cities does not exist. Please try again\n"
                 continue
             isConnected(city.lower(), target.lower())
->>>>>>> refs/remotes/origin/Ryan
         elif myInput == 5:
             map()
         elif myInput not in range(0-5):
@@ -389,7 +266,7 @@ def is_number(s):
     except ValueError:
         return False
 
-    
+
 def main(argv): #main argv for input
     cityFile = "city1.txt"
     print "Grabbing files for city Map"
