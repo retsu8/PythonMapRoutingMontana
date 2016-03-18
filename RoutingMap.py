@@ -15,21 +15,6 @@ except ImportError, e:
         print "Cant install networkx please resolve this first"
 roudmap=nx.Graph()
 cities=list()
-#global path
-class Town: #building definition
-    def __init__(self,name):
-        self.name = name
-    agacent = 0
-
-def breadth_first_search(g, source):
-     queue = deque([(None, source)])
-     enqueued = set([source])
-     while queue:
-         parent, n = queue.popleft()
-         yield parent, n
-         new = set(g[n]) - enqueued
-         enqueued |= new
-         queue.extend([(n, child) for child in new])
 
 def striplist(l):
     return([x.strip() for x in l])
@@ -56,10 +41,12 @@ def parseFile(cityFile):  #building town object dictionary
                 continue
             
             add2graph(info[0], info[1], info[2])
-    print "Done importing cities"
+    print "Done importing cities\n"
+    
 def map():
     for n1, n2, attr in roudmap.edges(data=True): # unpacking
         print n1, n2, attr['weight']
+        
 def add2graph(city1, city2, miles):
     if city1 not in roudmap:
         #print "adding", city1
@@ -70,6 +57,8 @@ def add2graph(city1, city2, miles):
     if city1 in roudmap:
         #print "Adding distance", miles
         roudmap.add_edge(city1, city2, weight=miles)
+
+        
 def findDirConnected():
     
     city = raw_input("Please enter the city to query\n").strip().lower()
@@ -86,33 +75,7 @@ def isDirectConnection(city1, city2):
     else:
         print "No connection found between %s and %s" % (city1, city2)
 
-
-
-def kHopping(city1, target, currentK, totalK, path):
-    path.append(city1)
-    if city1 == target:
-        print ("if1 taken with %s as current") % city1
-        if currentK <= totalK:
-            print ("The following path will take you to %s from %s\n") % (target, path[0])
-            for city in path:
-                print (" %s -->") % city
-
-            path = [];
-            return True
-        else:
-            print ("No path was found within the specified distance")
-            return False
-    elif (currentK > totalK):
-        print ("No path was found within the specified distance")
-        return False
-    elif roudmap.has_edge(city1, target):
-        return kHopping(target, target, (currentK + int(roudmap.get_edge_data(city1,target)["weight"])), totalK, path)
-    else:
-        for current in roudmap.neighbors(city1):
-            if kHopping(current, target, (currentK + int(roudmap.get_edge_data(city1,current)["weight"])), totalK, path):
-                return True
-
-def kHoppingWhilst(origin, targetCity, totalK):
+def kHopping(origin, targetCity, totalK):
     path = [origin]
     network = []
     foundPath = False
@@ -134,49 +97,43 @@ def kHoppingWhilst(origin, targetCity, totalK):
         #grab next element from the neighbor list
         if len(network[len(network)-1]) > 1:
             currentCity = network[len(network)-1].pop()
-            #print ("Current: %s") % currentCity
-            #print ("Last: %s\n") % lastCity
         #neighbor list is depleted. jump up a neighbor
         else:
             network.pop()
             lastCity = path.pop()
             if len(network)!=0:
-                #lastCity = currentCity
-                currentCity = network[len(network)-1][0] #path[len(path)-1]
+                currentCity = network[len(network)-1][0] 
                 currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
                 continue
             else: #list empty, so break
-                print "No path found"
                 foundPath = False
                 break
-            print ("Current: %s") % currentCity
-            print ("Last: %s\n") % lastCity
         path.append(currentCity)
         currentK = currentK + int(roudmap.get_edge_data(lastCity,currentCity)["weight"])
 
             
         if currentCity == targetCity:
             if currentK <= totalK:
-                print ("The following path will take you to %s from %s\n") % (targetCity, origin)
+                
+                pathway = origin
+                path.pop(0)
                 for city in path:
-                    print (" %s -->") % city
+                    pathway = pathway + " --> " + city
+
+                print ("\nThe pathway from %s to %s within %s miles is:") % (origin, targetCity, totalK)
+                print pathway + "\n"
                 path = [];
                 foundPath = True
                 break
             else:
-                print ("%s to %s in length: %s") % (lastCity, targetCity, currentK)
-                print path
                 currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
                 path.pop()
-                
-                #print("Close but too large")
-                currentCity = network[len(network)-1][0] #path[len(path)-1]
+                currentCity = network[len(network)-1][0] 
                 continue
         elif currentK > totalK:
             currentK = currentK - int(roudmap.get_edge_data(lastCity, currentCity)["weight"])
             path.pop()
-            #print ("Too Large")
-            currentCity = network[len(network)-1][0] #path[len(path)-1]
+            currentCity = network[len(network)-1][0] 
             continue
         elif roudmap.has_edge(currentCity, targetCity):
             neighbors = [currentCity, targetCity]
@@ -188,12 +145,72 @@ def kHoppingWhilst(origin, targetCity, totalK):
             for neighborino in roudmap.neighbors(currentCity):
                 if neighborino != lastCity and neighborino != currentCity:
                     neighbors.append(neighborino)
-            #print len(neighbors)
             network.append(neighbors)
 
     if not foundPath:
-        print ("No path found from %s to %s in %s miles") % (origin, targetCity, totalK)
-        
+        print ("\nNo path found from %s to %s in %s within miles") % (origin, targetCity, totalK)
+
+def isConnected(origin, targetCity):
+    path = [origin]
+    network = []
+    foundPath = False
+    lastCity = origin
+    currentCity = origin
+
+    #Build starting network
+    neighbors = []
+    neighbors.append(origin)
+    for neighborino in roudmap.neighbors(origin):
+        if neighborino != lastCity and neighborino != currentCity:
+            neighbors.append(neighborino)
+    network.append(neighbors)
+    
+    while len(network) > 0:
+        #update currentCity
+        lastCity = network[len(network)-1][0]
+        #grab next element from the neighbor list
+        if len(network[len(network)-1]) > 1:
+            currentCity = network[len(network)-1].pop()
+        #neighbor list is depleted. jump up a neighbor
+        else:
+            network.pop()
+            lastCity = path.pop()
+            if len(network)!=0:
+                currentCity = network[len(network)-1][0] 
+                continue
+            else: #list empty, so break
+                foundPath = False
+                break
+        path.append(currentCity)
+            
+        if currentCity == targetCity:
+            pathway = origin
+            path.pop(0)
+            for city in path:
+                pathway = pathway + " --> " + city
+            print ("\nYES: One pathway from %s to %s is:") % (origin, targetCity)
+            print pathway + "\n"
+            path = [];
+            foundPath = True
+            break
+
+        elif roudmap.has_edge(currentCity, targetCity):
+            neighbors = [currentCity, targetCity]
+            network.append(neighbors)
+            
+        else:
+            if len(network) < 4:
+                neighbors = []
+                #keep track of city that was branched
+                neighbors.append(currentCity)
+                for neighborino in roudmap.neighbors(currentCity):
+                    if neighborino != lastCity and neighborino != currentCity:
+                        neighbors.append(neighborino)
+                network.append(neighbors)
+
+    if not foundPath:
+        print ("\nNO: No path found from %s to %s in %s within miles") % (origin, targetCity, totalK)
+
     
 def userInput(): #getting user input
     myInput = int(1)
@@ -205,8 +222,8 @@ def userInput(): #getting user input
                             "4:Given two query cities print direct connection \n" +
                             "5:Print the map \n" +
                             "0: Quit\n")
-        if myInput == '':
-            print("Did not enter anything please try agian")
+        if myInput == '' or not is_number(myInput):
+            print("Invalid input... please try again.")
             myInput = int(1)
             continue
         myInput = int(myInput)
@@ -217,22 +234,43 @@ def userInput(): #getting user input
         elif myInput == 2:
             city1 = raw_input("List the first city:  ")
             city2 = raw_input("List the second city: ")
-            isDirectConnection(city1.lower(), city2.lower())
+            if roudmap.has_node(city1) and roudmap.has_node(city2):
+                isDirectConnection(city1.lower(), city2.lower())
+            else:
+                print "Sorry, one or more cities does not exist. Please try again\n"
+                continue
         elif myInput == 3:
-            city1 = raw_input("List the first city:  ")
+            city = raw_input("List the first city:  ")
             target = raw_input("List the second city: ")
-            k_hop = raw_input("Set the max distance: ")
-            path = []
-            #kHopping(city1.lower(), target.lower(), 0, int(k_hop), path)
-            kHoppingWhilst(city1.lower(), target.lower(), int(k_hop))
+            if roudmap.has_node(city) and roudmap.has_node(target):
+                k_hop = raw_input("Set the max distance: ")
+                kHopping(city.lower(), target.lower(), int(k_hop))
+            else:
+                print "Sorry, one or more cities does not exist. Please try again\n"
+                continue
         elif myInput == 4:
-            print("Not yet Implemented")
+            city = raw_input("List the first city:  ")
+            target = raw_input("List the second city: ")
+            if roudmap.has_node(city) and roudmap.has_node(target):
+                kHopping(city.lower(), target.lower(), int(k_hop))
+            else:
+                print "Sorry, one or more cities does not exist. Please try again\n"
+                continue
+            isConnected(city.lower(), target.lower())
         elif myInput == 5:
             map()
         elif myInput not in range(0-5):
             print("Input unreconized please try again")
     print("Goodbye thank you for using the database.")
 
+def is_number(s):
+    try:
+        float(s)
+        return True
+    except ValueError:
+        return False
+
+    
 def main(argv): #main argv for input
     cityFile = "city1.txt"
     print "Grabbing files for city Map"
